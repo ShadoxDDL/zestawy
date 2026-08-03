@@ -1,8 +1,30 @@
-(() => {
+// ==UserScript==
+// @name         Auto zmiana zestawów v2 - TEST
+// @namespace    local.shadoxddl.auto-zmiana-zestawow-v2
+// @version      2.0.0-test.1
+// @description  Test Auto zmiany zestawów z obsługą zestawu Ustawki dla grupy 5+.
+// @match        https://*.margonem.pl/*
+// @exclude      https://www.margonem.pl/*
+// @match        https://*.margonem.com/*
+// @exclude      https://www.margonem.com/*
+// @grant        none
+// @run-at       document-start
+// ==/UserScript==
+
+(async () => {
   "use strict";
 
-  const G = window.Gargonem;
-  if (!G?.Addons?.New || window.__autoZmianaZestawowV2Loaded) return;
+  if (window.__autoZmianaZestawowV2Loaded) return;
+  const deadline = Date.now() + 120000;
+  let G;
+  while (Date.now() < deadline) {
+    if (window.Gargonem?.Addons?.New && window.Gargonem?.Core?.Builds) {
+      G = window.Gargonem;
+      break;
+    }
+    await new Promise(resolve => setTimeout(resolve, 250));
+  }
+  if (!G) return;
   window.__autoZmianaZestawowV2Loaded = true;
 
   const { Core, Addons, UI, Util } = G;
