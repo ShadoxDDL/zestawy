@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto zmiana zestawów v2 - TEST
 // @namespace    local.shadoxddl.auto-zmiana-zestawow-v2
-// @version      2.0.0-test.2
+// @version      2.0.0-test.3
 // @description  Test Auto zmiany zestawów z obsługą zestawu Ustawki dla grupy 5+.
 // @match        https://*.margonem.pl/*
 // @exclude      https://www.margonem.pl/*
@@ -466,12 +466,25 @@
         style: {
           width: 18,
           height: 18,
+          minWidth: 18,
+          minHeight: 18,
           padding: 0,
+          margin: 0,
           border: 0,
           background: "transparent",
           color: "#ddd",
           cursor: "pointer",
-          font: "bold 16px/18px Arial"
+          fontFamily: "Arial, sans-serif",
+          fontSize: 14,
+          fontWeight: "bold",
+          lineHeight: "18px",
+          display: "inline-flex",
+          alignItems: "center",
+          justifyContent: "center",
+          verticalAlign: "top",
+          position: "relative",
+          top: -2,
+          boxSizing: "border-box"
         }
       }, collapsed ? "+" : "−");
     }
