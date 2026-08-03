@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto zmiana zestawów v2 - TEST
 // @namespace    local.shadoxddl.auto-zmiana-zestawow-v2
-// @version      2.0.0-test.1
+// @version      2.0.0-test.2
 // @description  Test Auto zmiany zestawów z obsługą zestawu Ustawki dla grupy 5+.
 // @match        https://*.margonem.pl/*
 // @exclude      https://www.margonem.pl/*
@@ -39,6 +39,7 @@
   const storage = new Addons.Storage("battleSetSwitcher", {
     enabled: false,
     rewriteAttackTarget: false,
+    collapsed: false,
     buildsPerProf: {},
     lastSelectedSet: -1
   }, true);
@@ -157,7 +158,7 @@
 
     constructor(props) {
       super(props);
-      this.mappedKeys = ["buildsPerProf", "enabled"];
+      this.mappedKeys = ["buildsPerProf", "enabled", "collapsed"];
       this.globalMappedKeys = ["battleSetSwitcherWindowEnabled"];
       this.passiveSwitchMinTime = 0;
       this.buildSwitchWasFromAddon = false;
@@ -452,12 +453,36 @@
       );
     }
 
+    renderCollapseControl() {
+      const collapsed = Boolean(this.state.collapsed);
+      return React.createElement("button", {
+        type: "button",
+        title: collapsed ? "Rozwiń ustawienia" : "Zwiń ustawienia",
+        onClick: event => {
+          event.preventDefault();
+          event.stopPropagation();
+          storage.set("collapsed", !collapsed);
+        },
+        style: {
+          width: 18,
+          height: 18,
+          padding: 0,
+          border: 0,
+          background: "transparent",
+          color: "#ddd",
+          cursor: "pointer",
+          font: "bold 16px/18px Arial"
+        }
+      }, collapsed ? "+" : "−");
+    }
+
     render() {
       return React.createElement(Components.NamedWindow, {
         onClose: () => managerStorage.set("battleSetSwitcherWindowEnabled", false),
         visible: this.state.battleSetSwitcherWindowEnabled,
         name: ADDON_ID,
-        title: "Auto zmiana zestawów"
+        title: "Auto zmiana zestawów",
+        rightControls: this.renderCollapseControl()
       },
         React.createElement(Components.WithLabelReverse, { label: "Włącz auto zmienianie" },
           React.createElement(Components.CheckboxPersistent, { storage, bind: "enabled" })
@@ -466,19 +491,23 @@
           label: "Przekierowywanie celu ataku",
           tip: "Przed atakiem może przekierować cel na przeciwnika pasującego do aktualnego zestawu."
         }, React.createElement(Components.CheckboxPersistent, { storage, bind: "rewriteAttackTarget" })),
-        React.createElement("h4", null, "Zestawy na konkretne sytuacje"),
-        this.renderSelector("Wojownik", "w"),
-        this.renderSelector("Paladyn", "p"),
-        this.renderSelector("Tancerz ostrzy", "b"),
-        this.renderSelector("Mag", "m"),
-        this.renderSelector("Tropiciel", "t"),
-        this.renderSelector("Łowca", "h"),
-        this.renderSelector("Kolosi", "collosus"),
-        this.renderSelector("Ustawki (grupa 5+)", "ustawki"),
-        React.createElement(Components.TipWrapper, {
-          tip: "Ten zestaw jest wybierany, gdy w pobliżu nie ma przeciwników."
-        }, React.createElement("h4", null, "Zestaw domyślny")),
-        this.renderSelector("Domyślny", "passive")
+        React.createElement(Components.If, { v: !this.state.collapsed },
+          React.createElement("div", null,
+            React.createElement("h4", null, "Zestawy na konkretne sytuacje"),
+            this.renderSelector("Wojownik", "w"),
+            this.renderSelector("Paladyn", "p"),
+            this.renderSelector("Tancerz ostrzy", "b"),
+            this.renderSelector("Mag", "m"),
+            this.renderSelector("Tropiciel", "t"),
+            this.renderSelector("Łowca", "h"),
+            this.renderSelector("Kolosi", "collosus"),
+            this.renderSelector("Ustawki (grupa 5+)", "ustawki"),
+            React.createElement(Components.TipWrapper, {
+              tip: "Ten zestaw jest wybierany, gdy w pobliżu nie ma przeciwników."
+            }, React.createElement("h4", null, "Zestaw domyślny")),
+            this.renderSelector("Domyślny", "passive")
+          )
+        )
       );
     }
   }

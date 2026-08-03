@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Auto zmiana zestawów - prywatna kopia ShadoxDDL
 // @namespace    https://github.com/ShadoxDDL/zestawy
-// @version      2.0.0
+// @version      2.1.0
 // @description  Auto zmiana zestawów ładowana z własnej kopii na GitHub Pages
 // @match        https://*.margonem.pl/*
 // @exclude      https://www.margonem.pl/*
@@ -14,7 +14,7 @@
 (function () {
     "use strict";
 
-    const SCRIPT_URL = "https://shadoxddl.github.io/zestawy/Auto-zmiana-zestawow-v2.js?v=1";
+    const SCRIPT_URL = `https://shadoxddl.github.io/zestawy/Auto-zmiana-zestawow-v2.js?cb=${Date.now()}`;
     const scripts = window.GARGONEM_PLUGINS ?? (window.GARGONEM_PLUGINS = []);
     scripts.push(SCRIPT_URL);
 })();
