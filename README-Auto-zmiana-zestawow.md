@@ -4,7 +4,7 @@ Repozytorium przechowuje lokalną kopię dodatku `Auto-zmiana-zestawow.js`.
 
 Adres pliku na GitHub Pages:
 
-`https://shadoxddl.github.io/zestawy/Auto-zmiana-zestawow.js`
+`https://shadoxddl.github.io/zestawy/Auto-zmiana-zestawow-v2.js`
 
 ## Instalacja
 
